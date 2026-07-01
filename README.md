@@ -50,7 +50,7 @@ mitate (diagnosis) + hagukumi (daily-living).
 
 ## 6 Pregel Cells (R0 path-reserved)
 
-All cells path-reserved under `40-engine/kotoba/crates/kotoba-kotodama/cells/iyashi_*/`.
+All cells path-reserved under `kotoba-lang/kotodama-cells/iyashi_*/`.
 Cell modules created at R1 ratification, import-time
 `RuntimeError("iyashi R0 scaffold: activate via Council ADR + R1 ratification + encrypted-record framework Council-attested production-ready")`.
 
