@@ -74,7 +74,7 @@ Cell modules created at R1 ratification, import-time
 | `clinicFacilityAttestation` | Per-clinic-site standards; annual audit |
 | `silenIyashiReview` | Council Wellbecoming + quality + multi-gen ratio quarterly review |
 
-See `/00-contracts/lexicons/com/etzhayyim/iyashi/README.md` for canonical schemas.
+See `lex/README.md` for canonical schemas.
 
 ## Constitutional Gates (G1–G14) — IMMUTABLE R0–R3
 
@@ -124,9 +124,9 @@ enforcement lands at R1 Council attestation review.
 
 ## Related Files
 
-- `/20-actors/iyashi/manifest.jsonld`
-- `/20-actors/iyashi/CLAUDE.md`
-- `/00-contracts/lexicons/com/etzhayyim/iyashi/` (6 Lexicons + README)
+- `manifest.edn`
+- `CLAUDE.md`
+- `lex/ (canonical EDN; wire/ contains external JSON)` (6 Lexicons + README)
 - `/90-docs/adr/2605263000-iyashi-clinical-care-provider-tier-b-actor-r0.md`
 - `/90-docs/adr/2605181100-mst-encrypted-records-signal-keywrap.md` — privacy envelope
 - `/90-docs/adr/2605261000-labor-liberation-transition-mechanism.md` — L4 gate

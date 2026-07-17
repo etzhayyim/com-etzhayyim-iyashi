@@ -1,4 +1,4 @@
-# 20-actors/iyashi — CLAUDE.md
+# com-etzhayyim-iyashi — CLAUDE.md
 
 ## Identity
 
@@ -155,9 +155,9 @@ Expected: all 6 imports raise `RuntimeError` with "R0 scaffold" message.
 
 ## Related Files
 
-- `/20-actors/iyashi/manifest.jsonld`
-- `/20-actors/iyashi/README.md`
-- `/00-contracts/lexicons/com/etzhayyim/iyashi/` (7 Lexicon JSONs + README)
+- `manifest.edn`
+- `README.md`
+- `lex/ (canonical EDN; wire/ contains external JSON)` (7 Lexicon JSONs + README)
 - `/90-docs/adr/2605263000-iyashi-clinical-care-provider-tier-b-actor-r0.md` — Master ADR
 - `/90-docs/adr/2605181100-mst-encrypted-records-signal-keywrap.md` — privacy envelope
 - `/90-docs/adr/2605181200-mst-encrypted-metadata-leak-reduction.md`

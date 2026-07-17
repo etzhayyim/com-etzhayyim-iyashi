@@ -1,0 +1,79 @@
+{"lexicon" 1,
+ "id" "com.etzhayyim.iyashi.clinicFacilityAttestation",
+ "description"
+ "Per-clinic-site facility standards attestation. Annual audit. Building + equipment + sterile-zone certification + accessibility + emergency-preparedness. Land Registry cross-link (waqf-equivalent inalienable donation per ADR-2605192245 if applicable). Council ≥3 attestation. G11 reinforce: no commercial EHR at this facility.",
+ "defs"
+ {"main"
+  {"type" "record",
+   "key" "tid",
+   "record"
+   {"type" "object",
+    "required"
+    ["createdAt"
+     "clinicFacilityName"
+     "auditPeriodStartUtc"
+     "auditPeriodEndUtc"
+     "buildingStandardsAttested"
+     "equipmentInventoryCid"
+     "sterileZoneCertifiedAtUtc"
+     "councilAttestations"
+     "commercialEhrNoneInstalled"],
+    "properties"
+    {"emergencyPreparednessAttested" {"type" "boolean"},
+     "equipmentInventoryCid"
+     {"type" "string",
+      "description"
+      "Equipment inventory list CID (sterilization equipment, exam tables, etc.)"},
+     "clinicFacilityName" {"type" "string"},
+     "createdAt" {"type" "string", "format" "datetime"},
+     "buildingStandardsReportCid" {"type" "string"},
+     "buildingStandardsAttested" {"type" "boolean"},
+     "nextAnnualAuditDueAtUtc" {"type" "string", "format" "datetime"},
+     "findings"
+     {"type" "array", "items" {"type" "ref", "ref" "#auditFinding"}},
+     "medicalAdvisoryMdDid"
+     {"type" "string",
+      "description"
+      "≥1 licensed-MD on Council medical advisory who reviewed the audit"},
+     "accessibilityComplianceAttested"
+     {"type" "boolean",
+      "description"
+      "WCAG / ADA / equivalent jurisdictional accessibility standards"},
+     "sterileZoneCertifiedAtUtc"
+     {"type" "string", "format" "datetime"},
+     "sterileZoneNextCertificationDueAtUtc"
+     {"type" "string", "format" "datetime"},
+     "infectionControlProtocolCid" {"type" "string"},
+     "facilityLocationGeoJsonCid" {"type" "string"},
+     "fireSafetyInspectionCid" {"type" "string"},
+     "commercialEhrNoneInstalled"
+     {"type" "boolean",
+      "const" true,
+      "description"
+      "G11 ATTESTATION: facility confirms NO commercial EHR (Epic / Cerner / Athena / Allscripts / NextGen / eClinicalWorks / Greenway / Practice Fusion) is installed"},
+     "auditPeriodEndUtc" {"type" "string", "format" "datetime"},
+     "auditPeriodStartUtc" {"type" "string", "format" "datetime"},
+     "patientCapacity"
+     {"type" "integer",
+      "description"
+      "Maximum concurrent patient capacity (informs R2/R3 scale planning)"},
+     "facilityLocationLandRegistryCid"
+     {"type" "string",
+      "description"
+      "Optional: Land Registry CID if facility is on Land-Trust-owned property (waqf-equivalent inalienable per ADR-2605192245)"},
+     "councilAttestations"
+     {"type" "array",
+      "items" {"type" "string"},
+      "minLength" 3,
+      "description"
+      "≥3 Council Lv6+ DIDs attesting the facility audit"}}}},
+  "auditFinding"
+  {"type" "object",
+   "properties"
+   {"severity"
+    {"type" "string", "knownValues" ["info" "warning" "critical"]},
+    "category" {"type" "string"},
+    "description" {"type" "string"},
+    "remediationDueAtUtc" {"type" "string", "format" "datetime"},
+    "remediationCompletedAtUtc"
+    {"type" "string", "format" "datetime"}}}}}

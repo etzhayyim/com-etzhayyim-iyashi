@@ -3,7 +3,7 @@
 
   Substrate-native Clojure (clj + datomic first tier). iyashi is an R0 scaffold (no cells yet),
   so its charter discipline lives entirely in the manifest + the 7 central AT-Proto lexicons at
-  00-contracts/lexicons/com/etzhayyim/iyashi/*.json. This suite locks the structurally-encoded
+  repository-local lex/*.edn. This suite locks the structurally-encoded
   gates so a future R1 cell wave cannot silently drift them:
 
     G2  encrypted-envelope MANDATORY + NO plaintext clinical content field
@@ -18,19 +18,17 @@
   None of these touch the substrate-wide no-server-key (G7) or Murakumo-only (G6) invariants —
   iyashi holds no key and records AI-assist as an audited, human-in-loop run (G8/G12)."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [cheshire.core :as json]))
+            [clojure.edn :as edn]))
 
 #?(:clj
    (do
      (def ^:private here (.getParentFile (java.io.File. ^String *file*)))      ;; methods/
-     (def ^:private actor-dir (.getParentFile here))                          ;; iyashi/
-     (def ^:private root (.getParentFile (.getParentFile actor-dir)))          ;; repo root
-     (def ^:private lexdir
-       (java.io.File. root "00-contracts/lexicons/com/etzhayyim/iyashi"))
+     (def ^:private root (.. here getParentFile getParentFile getParentFile))
+     (def ^:private lexdir (java.io.File. root "lex"))
      (defn- lex [name]
-       (json/parse-string (slurp (java.io.File. lexdir (str name ".json")))))
+       (edn/read-string (slurp (java.io.File. lexdir (str name ".edn")))))
      (defn- manifest []
-       (json/parse-string (slurp (java.io.File. actor-dir "manifest.jsonld"))))))
+       (:actor/manifest (edn/read-string (slurp (java.io.File. root "manifest.edn")))))))
 
 ;; ── navigation over an AT-Proto lexicon (string keys) ──
 (defn- record-node [doc]

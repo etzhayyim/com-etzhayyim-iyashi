@@ -1,0 +1,80 @@
+{"lexicon" 1,
+ "id" "com.etzhayyim.iyashi.providerAttestation",
+ "description"
+ "Provider credentialing + Council vetting record. G5 STRUCTURAL: medicalLicenseCiteCid + ≥3 Council Lv6+ DID attestations + ≥1 licensed-MD on Council medical advisory. G14 STRUCTURAL: providers are vocation-flow L5 stewards per Liberation Ladder L0..L6 (lLevel=L5 + employmentRelation=vocation-flow; cross-actor enforcement with chigiri.stewardLaborAttestation). External employment parallel relationships tracked in chigiri.stewardLaborAttestation.externalEmployerDid (NOT here).",
+ "defs"
+ {"main"
+  {"type" "record",
+   "key" "tid",
+   "record"
+   {"type" "object",
+    "required"
+    ["createdAt"
+     "providerDid"
+     "providerNameEncryptedCid"
+     "medicalLicenseCiteCid"
+     "councilAttestations"
+     "medicalAdvisoryMdDid"
+     "lLevel"
+     "employmentRelation"
+     "stewardLaborAttestationCid"],
+    "properties"
+    {"employmentRelation"
+     {"type" "string",
+      "const" "vocation-flow",
+      "description"
+      "G14 STRUCTURAL: providers are vocation-flow stewards; NOT employees; chigiri.stewardLaborAttestation.employmentRelation enum DELIBERATELY excludes employee."},
+     "medicalLicenseCiteCid"
+     {"type" "string",
+      "description"
+      "G5 REQUIRED: citation to provider's state-issued medical license; iyashi does NOT issue credentials, only attests vetting"},
+     "createdAt" {"type" "string", "format" "datetime"},
+     "revokedAt" {"type" "string", "format" "datetime"},
+     "jurisdictionIso3" {"type" "string"},
+     "licenseExpirationDateUtc" {"type" "string", "format" "datetime"},
+     "providerNameEncryptedCid"
+     {"type" "string",
+      "description"
+      "ADR-2605181100 encrypted envelope CID containing provider real name + credentials (PII; not exposed publicly)"},
+     "medicalAdvisoryMdDid"
+     {"type" "string",
+      "description"
+      "G5 REQUIRED: ≥1 licensed-MD on Council medical advisory who attested this provider"},
+     "licenseClassCode"
+     {"type" "string",
+      "knownValues"
+      ["md" "do" "np" "pa" "rn" "midwife" "phys-asst" "other"]},
+     "revocationReasonCid" {"type" "string"},
+     "attestationStatus"
+     {"type" "string",
+      "knownValues"
+      ["pending-vetting"
+       "active"
+       "on-leave"
+       "revoked"
+       "license-expired"]},
+     "lLevel"
+     {"type" "string",
+      "const" "L5",
+      "description"
+      "G14 STRUCTURAL: providers are L5 vocation-flow stewards per Liberation Ladder. Cross-actor enforcement with chigiri.stewardLaborAttestation."},
+     "specialtyAreas" {"type" "array", "items" {"type" "string"}},
+     "continuingMedEdCompletedCid"
+     {"type" "string",
+      "description"
+      "Optional: manabi-tracked continuing-medical-education completion records"},
+     "stewardLaborAttestationCid"
+     {"type" "string",
+      "description"
+      "Cross-actor cross-link to chigiri.stewardLaborAttestation record"},
+     "publicFundVocationGrantCid"
+     {"type" "string",
+      "description"
+      "Optional: Public Fund vocation grant CID (one-time setup OR ongoing)"},
+     "providerDid" {"type" "string"},
+     "councilAttestations"
+     {"type" "array",
+      "items" {"type" "string"},
+      "minLength" 3,
+      "description"
+      "G5 REQUIRED: ≥3 distinct Council Lv6+ DIDs vetting this provider"}}}}}}

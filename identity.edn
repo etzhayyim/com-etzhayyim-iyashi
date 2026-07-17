@@ -1,0 +1,14 @@
+{:identity/did "did:web:etzhayyim.com:actor:iyashi"
+ :identity/also-known-as ["at://iyashi.etzhayyim.com"
+                          "https://github.com/etzhayyim/com-etzhayyim-iyashi"
+                          "rad:bafkreietcyrfdv6fkz7wac4vfiue2fks6bdu5kg25h7ilfbswigwqtah7e"
+                          "did:web:etzhayyim.github.io:com-etzhayyim-iyashi"]
+ :identity/services
+ [{:service/id "did:web:etzhayyim.com:actor:iyashi#atproto_pds"
+   :service/type "AtprotoPersonalDataServer"
+   :service/endpoint "https://pds.etzhayyim.com"}
+  {:service/id "did:web:etzhayyim.com:actor:iyashi#aozora"
+   :service/type "AozoraAppView"
+   :service/endpoint "https://aozora.app"}]
+ :identity/wire-artifact ".well-known/did.json"
+ :identity/wire-format :did-json}

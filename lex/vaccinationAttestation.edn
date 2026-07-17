@@ -1,0 +1,65 @@
+{"lexicon" 1,
+ "id" "com.etzhayyim.iyashi.vaccinationAttestation",
+ "description"
+ "Per-vaccination-administration attestation. adverseEventFlag mandatory per administration (regulatory transparency; surveillance signal). Cross-link to yakushi if iyashi-administered yakushi-produced (lot # traceability). No mandatory vaccination policy at iyashi level — provider-patient consent governs.",
+ "defs"
+ {"main"
+  {"type" "record",
+   "key" "tid",
+   "record"
+   {"type" "object",
+    "required"
+    ["createdAt"
+     "patientPseudonymDid"
+     "providerDid"
+     "vaccineId"
+     "lotNumberCid"
+     "administeredAtUtc"
+     "consentRecordCid"
+     "adverseEventFlag"],
+    "properties"
+    {"patientPseudonymDid" {"type" "string"},
+     "adverseEventEncryptedReportCid"
+     {"type" "string",
+      "description"
+      "If adverseEventFlag != none-observed, encrypted detailed report CID (sent to jurisdiction reporting authority via external counsel per Council Lv6+ if severe)"},
+     "administeredAtUtc" {"type" "string", "format" "datetime"},
+     "administrationSiteCode"
+     {"type" "string", "description" "Body site (e.g., left-deltoid)"},
+     "createdAt" {"type" "string", "format" "datetime"},
+     "consentRecordCid"
+     {"type" "string",
+      "description"
+      "G4 REQUIRED: per-vaccination consent (chigiri.consentRecord) CID"},
+     "yakushiProductionBatchCid"
+     {"type" "string",
+      "description"
+      "Optional: yakushi production batch cross-link (when iyashi-administered yakushi-produced vaccine)"},
+     "vaccineId"
+     {"type" "string",
+      "description"
+      "WHO ATC code OR jurisdictional product code (e.g., NDC for US)"},
+     "vaccineNameEncryptedCid"
+     {"type" "string",
+      "description"
+      "Encrypted vaccine name + brand for audit (PHI when paired with patient)"},
+     "lotNumberCid"
+     {"type" "string",
+      "description"
+      "Vaccine lot # CID. If yakushi-produced, cross-link to yakushi production batch record."},
+     "charterRiderScanPass" {"type" "boolean"},
+     "adverseEventFlag"
+     {"type" "string",
+      "knownValues"
+      ["none-observed"
+       "minor"
+       "moderate"
+       "severe"
+       "follow-up-required"],
+      "description"
+      "REGULATORY MANDATORY: per administration adverse event observation"},
+     "administrationRouteCode"
+     {"type" "string",
+      "knownValues" ["im" "sc" "id" "oral" "nasal" "other"]},
+     "clinicFacilityCid" {"type" "string"},
+     "providerDid" {"type" "string"}}}}}}

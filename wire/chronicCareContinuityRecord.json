@@ -1,0 +1,85 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.iyashi.chronicCareContinuityRecord",
+  "description": "Longitudinal chronic care continuity record. G2 STRUCTURAL: encryptedPayloadCid REQUIRED (PHI). Cross-link with hagukumi.continuitySessionAttestation (daily-living adherence support) + mitate (specialist consult when needed) + yakushi (medication supply). Updated continuously over chronic condition lifetime; condition end date triggers archive transition.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": [
+          "createdAt",
+          "patientPseudonymDid",
+          "primaryProviderDid",
+          "chronicConditionCategory",
+          "encryptedPayloadCid",
+          "consentRecordCid"
+        ],
+        "properties": {
+          "createdAt": {"type": "string", "format": "datetime"},
+          "patientPseudonymDid": {
+            "type": "string",
+            "description": "30-day rotating pseudonym DID per ADR-2605181200; same patient across record updates (mapped via encrypted patient registry)"
+          },
+          "primaryProviderDid": {"type": "string"},
+          "chronicConditionCategory": {
+            "type": "string",
+            "knownValues": [
+              "diabetes",
+              "hypertension",
+              "asthma",
+              "copd",
+              "cardiovascular",
+              "thyroid",
+              "depression-anxiety",
+              "chronic-pain",
+              "chronic-kidney",
+              "autoimmune",
+              "other"
+            ],
+            "description": "Coarse category for aggregate reporting; precise diagnosis in encrypted payload"
+          },
+          "encryptedPayloadCid": {
+            "type": "string",
+            "description": "G2 REQUIRED: ADR-2605181100 encrypted envelope containing full longitudinal chronic care plan + adherence notes + medication schedule + vitals trend + specialist consult notes"
+          },
+          "consentRecordCid": {
+            "type": "string",
+            "description": "G4 REQUIRED: ongoing consent for chronic care (revocable; per-update consent verification at R2+)"
+          },
+          "encounterCidChain": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Chronological CIDs of clinicalEncounterAttestation records contributing to this continuity"
+          },
+          "hagukumiContinuitySessionCidChain": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Cross-actor cross-link to hagukumi.chronic_continuity session attestations"
+          },
+          "mitateSpecialistConsultCidChain": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Cross-actor cross-link to mitate specialist consult records"
+          },
+          "yakushiMedicationSupplyCidChain": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Cross-actor cross-link to yakushi Sukoyaka cold-chain delivery records"
+          },
+          "lastUpdatedAt": {"type": "string", "format": "datetime"},
+          "continuityStatus": {
+            "type": "string",
+            "knownValues": ["active", "in-remission", "transferred-to-specialist", "archived"]
+          },
+          "archiveTransitionAt": {"type": "string", "format": "datetime"},
+          "archiveReason": {
+            "type": "string",
+            "knownValues": ["condition-resolved", "patient-relocated", "patient-deceased", "patient-withdrew", "other"]
+          }
+        }
+      }
+    }
+  }
+}

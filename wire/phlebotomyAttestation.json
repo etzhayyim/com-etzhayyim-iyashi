@@ -1,0 +1,169 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.iyashi.phlebotomyAttestation",
+  "description": "Per-event log emitted by `iyashi.internal_phlebotomy` cell when a religious-corp iyashi clinic performs venipuncture in-house for a `mitate.diagnosticOrder` whose `orderRoutingTarget` is `iyashi-internal`. iyashi R2+ only. Per ADR-2605281950 §D3 + GE (phlebotomist MUST be vocation-flow L5 community-witnessed-competent steward — NO payroll / NO fee-for-service / NO contract-employment, inherits iyashi G14 + chigiri G13 + Liberation Ladder L5 from ADR-2605261000). Tube labels are encrypted (ADR-2605181100 envelope); cold-chain transit vendor must be in EXTERNAL_LOGISTICS_REGISTRY with Charter Rider §2(a)-(h) PASS attestation (ADR-2605281950 GB pattern).",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": [
+          "v",
+          "phlebotomyEventId",
+          "patientPseudonymDid",
+          "orderRefCid",
+          "phlebotomistAttestation",
+          "clinicFacilityCid",
+          "tubesCollected",
+          "coldChainAttestation",
+          "externalLabDid",
+          "complicationFlag",
+          "signedAt"
+        ],
+        "properties": {
+          "v": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+          },
+          "phlebotomyEventId": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "patientPseudonymDid": {
+            "type": "string",
+            "format": "did",
+            "description": "mitate-supplied 30-day-rotating pseudonym DID (per ADR-2605260100 G2)."
+          },
+          "orderRefCid": {
+            "type": "string",
+            "format": "cid",
+            "description": "Binds to the originating `mitate.diagnosticOrder` whose `orderRoutingTarget = 'iyashi-internal'`."
+          },
+          "phlebotomistAttestation": {
+            "type": "object",
+            "required": [
+              "providerAttestationCid",
+              "phlebotomistClass",
+              "employmentRelation",
+              "lLevel"
+            ],
+            "properties": {
+              "providerAttestationCid": {
+                "type": "string",
+                "format": "cid",
+                "description": "Reference to the phlebotomist's `com.etzhayyim.iyashi.providerAttestation` record."
+              },
+              "phlebotomistClass": {
+                "type": "string",
+                "knownValues": [
+                  "community-witnessed-competent"
+                ],
+                "description": "ADR-2605281950 GE structural enforcement: only this value is constitutionally valid. Clinical phlebotomist credential / state-licensed-phlebotomist / commercial-contract are NOT permitted classes (mirrors iyashi G3 community-witnessed-competent pattern at the phlebotomy level)."
+              },
+              "employmentRelation": {
+                "type": "string",
+                "knownValues": [
+                  "vocation-flow"
+                ],
+                "description": "ADR-2605281950 GE structural enforcement: only this value is constitutionally valid. payroll / wage / salary / bonus / commission / fee-for-service are NOT permitted (mirrors iyashi G14 + chigiri G13 + ADR-2605261000 L5)."
+              },
+              "lLevel": {
+                "type": "string",
+                "knownValues": [
+                  "L5"
+                ],
+                "description": "Liberation Ladder L5 Vocation tier (per ADR-2605261000)."
+              }
+            }
+          },
+          "clinicFacilityCid": {
+            "type": "string",
+            "format": "cid",
+            "description": "Reference to the iyashi `com.etzhayyim.iyashi.clinicFacilityAttestation` for the site."
+          },
+          "tubesCollected": {
+            "type": "array",
+            "items": {"type": "ref", "ref": "#tubeRecord"},
+            "minLength": 1,
+            "maxLength": 12
+          },
+          "coldChainAttestation": {
+            "type": "object",
+            "required": [
+              "temperatureRangeC",
+              "transitVendorDid"
+            ],
+            "properties": {
+              "temperatureRangeC": {
+                "type": "string",
+                "knownValues": [
+                  "room-temperature-15-30",
+                  "refrigerated-2-8",
+                  "frozen-minus-20",
+                  "frozen-minus-70"
+                ]
+              },
+              "transitVendorDid": {
+                "type": "string",
+                "format": "did",
+                "description": "External courier DID; MUST be in EXTERNAL_LOGISTICS_REGISTRY with Charter Rider §2(a)-(h) PASS attestation chain (ADR-2605281950 GB pattern)."
+              }
+            }
+          },
+          "externalLabDid": {
+            "type": "string",
+            "format": "did",
+            "description": "Downstream lab DID; MUST match the originating `mitate.diagnosticOrder.externalLabDid` and be in EXTERNAL_LAB_DID_REGISTRY."
+          },
+          "complicationFlag": {
+            "type": "boolean",
+            "description": "TRUE if hematoma / vasovagal episode / failed-stick / other adverse event occurred during draw. Triggers iyashi `acute_first_line` cell escalation flow (iyashi R2+)."
+          },
+          "complicationNotesCid": {
+            "type": "string",
+            "format": "cid",
+            "description": "Optional. If `complicationFlag = true`, link to encrypted notes envelope (ADR-2605181100)."
+          },
+          "signedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "tubeRecord": {
+      "type": "object",
+      "required": [
+        "tubeType",
+        "volumeMlTenths",
+        "labelCidEnvelopeRef"
+      ],
+      "properties": {
+        "tubeType": {
+          "type": "string",
+          "knownValues": [
+            "edta",
+            "serum-separator",
+            "sodium-citrate",
+            "fluoride-oxalate",
+            "urine-cup-sterile",
+            "heparin-lithium"
+          ]
+        },
+        "volumeMlTenths": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 200,
+          "description": "Specimen volume in mL × 10 (tenths of a milliliter). Implied units: 5 = 0.5 mL, 200 = 20.0 mL. Integer storage avoids floating-point drift per AT Protocol Lexicon spec discipline."
+        },
+        "labelCidEnvelopeRef": {
+          "type": "string",
+          "format": "cid",
+          "description": "Label payload is an `com.etzhayyim.encrypted.*` envelope (ADR-2605181100); plaintext PHI on tube label is prohibited."
+        }
+      }
+    }
+  }
+}

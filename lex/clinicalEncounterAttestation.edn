@@ -1,0 +1,75 @@
+{"lexicon" 1,
+ "id" "com.etzhayyim.iyashi.clinicalEncounterAttestation",
+ "description"
+ "Per-encounter clinical attestation. G2 STRUCTURAL: encryptedPayloadCid REQUIRED; plaintext content fields rejected at schema layer (R1 additionalProperties=false). Clinical PHI is the most sensitive observation class in religious-corp. Patient identity uses 30-day rotating pseudonym DID per ADR-2605181200. Aggregate public fields ONLY (encounter type, duration bucket, provider DID); no PHI in public fields.",
+ "defs"
+ {"main"
+  {"type" "record",
+   "key" "tid",
+   "record"
+   {"type" "object",
+    "required"
+    ["createdAt"
+     "encounterType"
+     "providerDid"
+     "patientPseudonymDid"
+     "consentRecordCid"
+     "encryptedPayloadCid"
+     "clinicFacilityCid"],
+    "properties"
+    {"encounterDurationMinBucket"
+     {"type" "string",
+      "knownValues" ["under-15" "15-30" "30-45" "45-60" "over-60"],
+      "description"
+      "Coarse duration bucket; precise duration in encrypted payload"},
+     "patientPseudonymDid"
+     {"type" "string",
+      "description"
+      "30-day rotating pseudonym DID per ADR-2605181200"},
+     "aiAssistUsed"
+     {"type" "boolean",
+      "description"
+      "Whether AI clinical decision support was used (G12 Murakumo-only; G8 human-in-loop mandatory)"},
+     "kotobaDatomicAttestationCid" {"type" "string"},
+     "createdAt" {"type" "string", "format" "datetime"},
+     "consentRecordCid"
+     {"type" "string",
+      "description"
+      "G4 REQUIRED: per-encounter consent record (chigiri.consentRecord) CID"},
+     "specialistReferralCid"
+     {"type" "string",
+      "description"
+      "If specialist referral generated, the referral record CID (cross-link to mitate)"},
+     "aiAssistRunCid"
+     {"type" "string",
+      "description"
+      "If aiAssistUsed=true, the AI-assist invocation record CID (provider sign-off attached per G8)"},
+     "encounterType"
+     {"type" "string",
+      "knownValues"
+      ["primary-care-adult"
+       "primary-care-pediatric"
+       "primary-care-geriatric"
+       "acute-first-line"
+       "antenatal"
+       "postnatal"
+       "well-child"
+       "preventive-screening"
+       "specialist-referral-handoff"]},
+     "encryptedPayloadCid"
+     {"type" "string",
+      "description"
+      "G2 REQUIRED: ADR-2605181100 encrypted envelope CID containing all PHI (chief complaint, exam, assessment, plan). Plaintext content fields rejected at schema layer."},
+     "emergencyEscalationCid"
+     {"type" "string",
+      "description"
+      "If mitate G5 emergency keyword matched, the escalation record CID (G10)"},
+     "charterRiderScanPass" {"type" "boolean"},
+     "clinicFacilityCid"
+     {"type" "string",
+      "description"
+      "L5 clinicFacilityAttestation CID for the encounter site"},
+     "providerDid"
+     {"type" "string",
+      "description"
+      "Provider DID. Cross-link to providerAttestation; verified at cell entry."}}}}}}

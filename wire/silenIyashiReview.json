@@ -1,0 +1,91 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.iyashi.silenIyashiReview",
+  "description": "Quarterly Council Wellbecoming + quality + multi-generational ratio + Charter Rider §1.13 compliance review for iyashi operations. Council Lv6+ ≥3 attestation required. Mirrors hagukumi.silenCareReview pattern. Aggregate metrics only (no individual patient PII).",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": [
+          "createdAt",
+          "reviewPeriodStartUtc",
+          "reviewPeriodEndUtc",
+          "totalEncounters",
+          "providerCount",
+          "clinicFacilityCount",
+          "cohortRatio",
+          "wellbecomingAttested",
+          "charterRider113Compliance",
+          "councilAttestations"
+        ],
+        "properties": {
+          "createdAt": {"type": "string", "format": "datetime"},
+          "reviewPeriodStartUtc": {"type": "string", "format": "datetime"},
+          "reviewPeriodEndUtc": {"type": "string", "format": "datetime"},
+          "totalEncounters": {"type": "integer", "minimum": 0},
+          "encountersByType": {
+            "type": "object",
+            "properties": {
+              "primary-care-adult": {"type": "integer"},
+              "primary-care-pediatric": {"type": "integer"},
+              "primary-care-geriatric": {"type": "integer"},
+              "acute-first-line": {"type": "integer"},
+              "antenatal": {"type": "integer"},
+              "postnatal": {"type": "integer"},
+              "well-child": {"type": "integer"},
+              "preventive-screening": {"type": "integer"},
+              "specialist-referral-handoff": {"type": "integer"}
+            }
+          },
+          "providerCount": {"type": "integer", "minimum": 0},
+          "providerWorkCapViolationCount": {
+            "type": "integer",
+            "description": "G9 violations (provider exceeded 12-hr work cap or under 12-hr recovery); target 0"
+          },
+          "clinicFacilityCount": {"type": "integer", "minimum": 0},
+          "cohortRatio": {
+            "type": "object",
+            "properties": {
+              "under18Bps": {"type": "integer", "minimum": 0, "maximum": 10000, "description": "Basis points (1/10000)."},
+              "adultsBps": {"type": "integer", "minimum": 0, "maximum": 10000, "description": "Basis points (1/10000)."},
+              "over65Bps": {"type": "integer", "minimum": 0, "maximum": 10000, "description": "Basis points (1/10000)."}
+            },
+            "description": "Multi-generational ratio per encounter in basis points (under18+adults+over65=10000)."
+          },
+          "vaccinationCount": {"type": "integer"},
+          "adverseEventCountTotal": {"type": "integer"},
+          "adverseEventCountSevere": {"type": "integer"},
+          "mitateEmergencyEscalationCount": {
+            "type": "integer",
+            "description": "G10 escalations via mitate emergency keyword (operational metric)"
+          },
+          "wellbecomingAttested": {"type": "boolean"},
+          "wellbecomingReportCid": {"type": "string"},
+          "charterRider113Compliance": {
+            "type": "boolean",
+            "description": "Charter Rider §1.13 (Eros/Gore content moderation extending to clinical setting) compliance verified"
+          },
+          "addictiveUxNoneAttested": {
+            "type": "boolean",
+            "description": "Mirrors hagukumi G13: no gamification / streaks / variable reward / FOMO in patient-facing interfaces"
+          },
+          "commercialEhrPenetrationBps": {
+            "type": "integer",
+            "const": 0,
+            "description": "G11 STRUCTURAL: 0 basis points — no commercial EHR installed at any iyashi clinic facility (audit cross-check)"
+          },
+          "councilAttestations": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minLength": 3
+          },
+          "medicalAdvisoryMdDid": {"type": "string"},
+          "publishedAtMstUri": {"type": "string"},
+          "ipfsPinCid": {"type": "string"}
+        }
+      }
+    }
+  }
+}
